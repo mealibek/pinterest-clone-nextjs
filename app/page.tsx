@@ -1,9 +1,3 @@
-import Header from "@/components/UI/Header";
-
 export default function Home() {
-  return (
-    <main>
-      <Header />
-    </main>
-  );
+  return <main className="content"></main>;
 }

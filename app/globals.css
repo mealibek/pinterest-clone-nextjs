@@ -3,7 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  .body {
+  body {
     @apply bg-white text-black font-base;
+  }
+}
+
+@layer components {
+  .content {
+    @apply max-w-screen-3xl m-auto px-4 bg-white text-black;
   }
 }
