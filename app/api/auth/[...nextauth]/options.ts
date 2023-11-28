@@ -46,9 +46,6 @@ export const options: NextAuthOptions = {
                     // If there's an issue with the credentials or other error, handle it
                     throw new Error('Invalid credentials or unexpected response');
                 } catch (error) {
-                    // Handle errors, log them, etc.
-                    console.error('Error during authentication:', error);
-                    // Return null to indicate authentication failure
                     return null;
                 }
             }

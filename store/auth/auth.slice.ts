@@ -37,9 +37,7 @@ export const authSlice = createSlice({
             state.user.email = action.payload.user.email
             state.user.firstName = action.payload.user.firstName
             state.user.lastName = action.payload.user.lastName
-            state.user.role = action.payload.user.role ?? 'BUYER'
             state.user.image = action.payload.user.image
-            state.user.gender = action.payload.user.gender
         }
     },
 });

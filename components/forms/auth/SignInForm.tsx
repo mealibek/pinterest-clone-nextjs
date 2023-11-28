@@ -32,13 +32,27 @@ function SignInForm() {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth);
   const { data: session } = useSession();
+  const extractErrorMessages = (error: any): string[] => {
+    if (error.response) {
+      if (error.response.status === 404) {
+        return ["Oops, Email not registered."];
+      } else if (error.response.data) {
+        const errorObj = error.response.data;
+        return Object.values(errorObj as string).flat();
+      }
+    }
+
+    if (error.status === 401) {
+      return ["Invalid email or password"];
+    }
+
+    return ["Server issue, please try again later"];
+  };
 
   const onSubmit = async (data: SignInSchemaType) => {
     try {
-      // First, check if the email is valid
       await emailCheckRequest(data.email);
 
-      // If email check is successful, proceed with sign-in
       const signInResponse = await signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -51,26 +65,14 @@ function SignInForm() {
         !signInResponse.error &&
         signInResponse.status === 200
       ) {
-        // Clear error messages on successful sign-in
         setErrorMessages([]);
-        // Refresh the router or navigate to a different page upon successful sign-in
-        router.refresh();
+
+        router.push("/auth/");
       } else if (signInResponse?.error) {
-        setErrorMessages(["Неверный email или пароль"]);
+        setErrorMessages(extractErrorMessages(signInResponse));
       }
     } catch (error: any) {
-      if (error.response?.status === 404) {
-        setErrorMessages(["Упс, Email не зарегистрирован."]);
-      } else if (error.response?.data) {
-        const errorObj = error.response.data;
-        let errors: string[] = [];
-        for (const key in errorObj) {
-          errors.push(errorObj[key][0]);
-        }
-        setErrorMessages(errors);
-      } else {
-        setErrorMessages(["Проблема с сервером, попробуйте позже"]);
-      }
+      setErrorMessages(extractErrorMessages(error));
     }
   };
 
@@ -82,6 +84,13 @@ function SignInForm() {
         </Link>
         <h2 className="text-3xl font-medium">Welcome to Pinterest!</h2>
         <h3 className="text-xl font-medium">Sign In</h3>
+
+        {errorMessages.length > 0 &&
+          errorMessages.map((error, index) => (
+            <p className="text-red-700 text-xs" key={index}>
+              {error}
+            </p>
+          ))}
       </div>
       <form className="w-full" onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="mb-4">

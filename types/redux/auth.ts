@@ -4,9 +4,7 @@ export type AuthUserType = {
         email: string;
         firstName: string;
         lastName: string;
-        role: string;
         image: string;
-        gender: string;
     },
     isLoggedIn: boolean
 }
