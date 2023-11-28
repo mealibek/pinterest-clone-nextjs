@@ -31,18 +31,26 @@ export const options: NextAuthOptions = {
                 }
             },
             async authorize(credentials, req) {
-                const res = await signInRequest({
-                    email: credentials?.email!,
-                    password: credentials?.password!
-                });
-                const user = await res.json();
+                try {
+                    const res = await signInRequest({
+                        email: credentials?.email!,
+                        password: credentials?.password!
+                    });
+                    const user = await res.json();
 
-                // If no error and we have user data, return it
-                if (user && res.ok) {
-                    return user
+                    // If no error and we have user data, return it
+                    if (user && res.ok) {
+                        return user
+                    }
+
+                    // If there's an issue with the credentials or other error, handle it
+                    throw new Error('Invalid credentials or unexpected response');
+                } catch (error) {
+                    // Handle errors, log them, etc.
+                    console.error('Error during authentication:', error);
+                    // Return null to indicate authentication failure
+                    return null;
                 }
-                // Return null if user data could not be retrieved
-                return null
             }
         })
     ],

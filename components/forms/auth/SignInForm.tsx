@@ -35,8 +35,10 @@ function SignInForm() {
 
   const onSubmit = async (data: SignInSchemaType) => {
     try {
+      // First, check if the email is valid
       await emailCheckRequest(data.email);
 
+      // If email check is successful, proceed with sign-in
       const signInResponse = await signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -49,12 +51,15 @@ function SignInForm() {
         !signInResponse.error &&
         signInResponse.status === 200
       ) {
+        // Clear error messages on successful sign-in
+        setErrorMessages([]);
+        // Refresh the router or navigate to a different page upon successful sign-in
         router.refresh();
       } else if (signInResponse?.error) {
         setErrorMessages(["Неверный email или пароль"]);
       }
     } catch (error: any) {
-      if (error.response?.status == 404) {
+      if (error.response?.status === 404) {
         setErrorMessages(["Упс, Email не зарегистрирован."]);
       } else if (error.response?.data) {
         const errorObj = error.response.data;
