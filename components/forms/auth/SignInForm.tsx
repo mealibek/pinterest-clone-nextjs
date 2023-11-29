@@ -67,7 +67,7 @@ function SignInForm() {
       ) {
         setErrorMessages([]);
 
-        router.push("/auth/");
+        router.push("/profile");
       } else if (signInResponse?.error) {
         setErrorMessages(extractErrorMessages(signInResponse));
       }
