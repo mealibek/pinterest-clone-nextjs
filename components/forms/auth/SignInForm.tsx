@@ -8,10 +8,10 @@ import { useForm } from "react-hook-form";
 import { SignInSchema, SignInSchemaType } from "@/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { emailCheckRequest } from "@/services/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { emailCheckRequest, getAuthInfo } from "@/services/auth";
+import { useDispatch } from "react-redux";
 import { signIn, useSession } from "next-auth/react";
+import { setAuthentication } from "@/store/auth/auth.slice";
 
 function SignInForm() {
   const {
@@ -28,10 +28,8 @@ function SignInForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth);
-  const { data: session } = useSession();
+
   const extractErrorMessages = (error: any): string[] => {
     if (error.response) {
       if (error.response.status === 404) {
@@ -67,8 +65,18 @@ function SignInForm() {
       ) {
         setErrorMessages([]);
 
-        router.push("/profile");
-      } else if (signInResponse?.error) {
+        const { data: session } = useSession();
+
+        if (session && session.user && session.user.access) {
+          console.log("session access working");
+          const userData = await getAuthInfo(session.user.access);
+          dispatch(setAuthentication(userData.data));
+          router.push("/profile");
+        } else {
+          // Handle the case where session or session.user.access is undefined
+          console.error("Session or access token is undefined");
+        }
+      } else if (signInResponse?.error && !signInResponse.ok) {
         setErrorMessages(extractErrorMessages(signInResponse));
       }
     } catch (error: any) {

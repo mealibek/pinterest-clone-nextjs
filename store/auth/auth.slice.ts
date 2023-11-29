@@ -1,30 +1,14 @@
 import { AuthUserType } from "@/types/redux/auth";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface AuthState {
-    user: {
-        id: number,
-        role: string,
-        email: string,
-        firstName: string,
-        lastName: string,
-        gender: string,
-        image: string,
-    },
-    isLoggedIn: boolean
-}
-
-const initialState: AuthState = {
+const initialState: AuthUserType = {
     user: {
         id: 0,
-        role: "BUYER",
         email: "",
-        firstName: "",
-        lastName: "",
-        gender: "",
-        image: "",
-    },
-    isLoggedIn: false
+        first_name: "",
+        last_name: "",
+        profile_image: "",
+    }
 };
 
 export const authSlice = createSlice({
@@ -32,12 +16,11 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setAuthentication: (state, action: PayloadAction<AuthUserType>) => {
-            state.isLoggedIn = action.payload.isLoggedIn;
             state.user.id = action.payload.user.id
             state.user.email = action.payload.user.email
-            state.user.firstName = action.payload.user.firstName
-            state.user.lastName = action.payload.user.lastName
-            state.user.image = action.payload.user.image
+            state.user.first_name = action.payload.user.first_name
+            state.user.last_name = action.payload.user.last_name
+            state.user.profile_image = action.payload.user.profile_image
         }
     },
 });

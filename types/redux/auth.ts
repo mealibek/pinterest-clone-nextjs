@@ -2,9 +2,8 @@ export type AuthUserType = {
     user: {
         id: number;
         email: string;
-        firstName: string;
-        lastName: string;
-        image: string;
-    },
-    isLoggedIn: boolean
+        first_name: string;
+        last_name: string;
+        profile_image: string;
+    }
 }

@@ -26,3 +26,9 @@ export const signInRequest = (data: {
 export const emailCheckRequest = async (email: string) => {
     return axios.post(`${BASE_URL}/auth/email-check/`, { email });
 };
+
+export const getAuthInfo = (token: string) => {
+    return axios.post(`${BASE_URL}/auth/info`, {
+        token,
+    })
+}
