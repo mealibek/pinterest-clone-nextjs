@@ -1,5 +1,5 @@
 import React from "react";
-import { HashLoader } from "react-spinners";
+
 function Spinner() {
   return (
     <div className="w-full grid place-items-center">
