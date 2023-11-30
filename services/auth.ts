@@ -28,7 +28,9 @@ export const emailCheckRequest = async (email: string) => {
 };
 
 export const getAuthInfo = (token: string) => {
-    return axios.post(`${BASE_URL}/auth/info`, {
-        token,
+    return axios.post(`${BASE_URL}/auth/info/`, null, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     })
 }

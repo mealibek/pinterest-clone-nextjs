@@ -16,14 +16,9 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setAuthentication: (state, action: PayloadAction<AuthUserType>) => {
-            state.user.id = action.payload.user.id
-            state.user.email = action.payload.user.email
-            state.user.first_name = action.payload.user.first_name
-            state.user.last_name = action.payload.user.last_name
-            state.user.profile_image = action.payload.user.profile_image
+            state.user = { ...action.payload.user };
         }
     },
 });
 
-
-export const { setAuthentication } = authSlice.actions
+export const { setAuthentication } = authSlice.actions;

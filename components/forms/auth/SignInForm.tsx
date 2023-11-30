@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pinterest from "@/assets/svg/pinterest.svg";
 import Input from "@/components/UI/Input";
 import { useForm } from "react-hook-form";
@@ -12,13 +12,13 @@ import { emailCheckRequest, getAuthInfo } from "@/services/auth";
 import { useDispatch } from "react-redux";
 import { signIn, useSession } from "next-auth/react";
 import { setAuthentication } from "@/store/auth/auth.slice";
+import { AuthUserType } from "@/types/redux/auth";
 
 function SignInForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
+    formState: { errors },
   } = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema as any),
     mode: "onBlur",
@@ -29,6 +29,8 @@ function SignInForm() {
   const callbackUrl = searchParams.get("callbackUrl");
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const dispatch = useDispatch();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { data: session } = useSession();
 
   const extractErrorMessages = (error: any): string[] => {
     if (error.response) {
@@ -50,34 +52,15 @@ function SignInForm() {
   const onSubmit = async (data: SignInSchemaType) => {
     try {
       await emailCheckRequest(data.email);
-
-      const signInResponse = await signIn("credentials", {
+      const req = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        redirect: false,
-        callbackUrl: callbackUrl ?? "/",
+        redirect: true,
+        callbackUrl: "/auth/signin/redirect",
       });
 
-      if (
-        signInResponse?.ok &&
-        !signInResponse.error &&
-        signInResponse.status === 200
-      ) {
-        setErrorMessages([]);
-
-        const { data: session } = useSession();
-
-        if (session && session.user && session.user.access) {
-          console.log("session access working");
-          const userData = await getAuthInfo(session.user.access);
-          dispatch(setAuthentication(userData.data));
-          router.push("/profile");
-        } else {
-          // Handle the case where session or session.user.access is undefined
-          console.error("Session or access token is undefined");
-        }
-      } else if (signInResponse?.error && !signInResponse.ok) {
-        setErrorMessages(extractErrorMessages(signInResponse));
+      if (req?.error && !req.ok) {
+        setErrorMessages(["Invalid Email or password."]);
       }
     } catch (error: any) {
       setErrorMessages(extractErrorMessages(error));
