@@ -26,7 +26,7 @@ function HomePins() {
   }, []);
 
   return (
-    <div className="w-full flex items-start gap-4">
+    <div className="w-full columns-4 xl:columns-6">
       {pins.length === 0 && isLoading ? (
         <p>No Pins yet.</p>
       ) : isLoading ? (

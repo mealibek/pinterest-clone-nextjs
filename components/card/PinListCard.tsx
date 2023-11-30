@@ -14,31 +14,31 @@ function PinListCard(props: PinType) {
   };
 
   return (
-    <div className="relative max-w-[250px] group">
+    <div className="relative max-w-[250px] group my-4 mx-auto break-inside-avoid">
       <button
         type="button"
         className="text-white bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full px-5 py-2.5 text-center absolute top-2 right-2 z-10 group-hover:block hidden font-medium text-sm"
       >
         Save
       </button>
-      <div className="relative cursor-zoom-in">
+      <div className="relative cursor-zoom-in z-0">
         <Link href={`/pins/${props.id}`} className="text-gray-900">
           <Image
             src={props.image}
             alt={props.title}
             width={250}
-            height={400}
+            height={300}
             className="object-cover object-center min-h-[100px] rounded-2xl group-hover:brightness-50 cursor-zoom-in"
           />
         </Link>
-        <div className="absolute bottom-2 left-2 right-2 flex items-center gap-1 justify-between">
+        <div className="absolute bottom-2 left-2 right-2 flex items-center gap-1 justify-between z-10">
           <a
             href={props.path}
             target="_blank"
             className="text-xs items-center gap-1 text-gray-900 bg-white focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-blue-400 font-medium rounded-full p-1 px-2 hidden opacity-80 hover:opacity-100 group-hover:flex"
           >
             <IconLink width={25} height={25} />
-            {truncateTitle(props.origin, 20)}
+            {truncateTitle(props.origin, 10)}
           </a>
           <div className="flex items-center gap-1">
             <button

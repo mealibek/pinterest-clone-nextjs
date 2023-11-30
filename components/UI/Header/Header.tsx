@@ -29,7 +29,7 @@ import { IconShieldLockFilled } from "@tabler/icons-react";
 
 const customTheme: CustomFlowbiteTheme = {
   tooltip: {
-    base: "absolute inline-block z-10 rounded-full py-2 px-3 text-sm font-medium shadow-sm",
+    base: "absolute inline-block z-20 rounded-full py-2 px-3 text-sm font-medium shadow-sm",
     style: {
       dark: "bg-black text-white",
     },
@@ -43,7 +43,7 @@ const customTheme: CustomFlowbiteTheme = {
   },
   dropdown: {
     floating: {
-      base: "z-0 w-fit rounded-xl divide-y divide-gray-100 shadow focus:outline-none",
+      base: "z-10 w-fit rounded-xl divide-y divide-gray-100 shadow focus:outline-none",
     },
   },
 };
