@@ -26,7 +26,7 @@ function HomePins() {
   }, []);
 
   return (
-    <div className="w-full columns-4 xl:columns-6">
+    <div className="w-full columns-4 xl:columns-6 space-y-4">
       {pins.length === 0 && isLoading ? (
         <p>No Pins yet.</p>
       ) : isLoading ? (

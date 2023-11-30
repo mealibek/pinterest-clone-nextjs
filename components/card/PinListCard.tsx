@@ -14,7 +14,7 @@ function PinListCard(props: PinType) {
   };
 
   return (
-    <div className="relative max-w-[250px] group my-4 mx-auto break-inside-avoid">
+    <div className="relative max-w-[250px] group break-inside-avoid">
       <button
         type="button"
         className="text-white bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full px-5 py-2.5 text-center absolute top-2 right-2 z-10 group-hover:block hidden font-medium text-sm"
