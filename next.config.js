@@ -15,6 +15,12 @@ const nextConfig = {
         hostname: "storage.googleapis.com",
         pathname: "/dreaps-assets/**",
       },
+      {
+        hostname: "cdn.pixabay.com",
+      },
+      {
+        hostname: "avatars.githubusercontent.com",
+      },
     ],
   },
 };
