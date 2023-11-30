@@ -81,7 +81,7 @@ function Header() {
 
       <div className="text-gray-600 flex items-center gap-2">
         <Flowbite theme={{ theme: customTheme }}>
-          <Tooltip content="Notifications" placement="bottom">
+          <Tooltip content="Notifications" placement="bottom" arrow={false}>
             <Link
               href="/profile/notifications"
               className="p-2 hover:bg-gray-200 rounded-full block"
@@ -90,7 +90,7 @@ function Header() {
             </Link>
           </Tooltip>
 
-          <Tooltip content="Messages" placement="bottom">
+          <Tooltip content="Messages" placement="bottom" arrow={false}>
             <Link
               href="/profile/messages"
               className="p-2 hover:bg-gray-200 rounded-full block"
@@ -98,7 +98,7 @@ function Header() {
               <IconMessageCircle2Filled width={25} height={25} />
             </Link>
           </Tooltip>
-          <Tooltip content="Your profile" placement="bottom">
+          <Tooltip content="Your profile" placement="bottom" arrow={false}>
             <Link
               href="/profile"
               className="p-2 hover:bg-gray-200 rounded-full block"
@@ -111,7 +111,11 @@ function Header() {
             label=""
             renderTrigger={() => (
               <div>
-                <Tooltip content="Accounts & more options" placement="bottom">
+                <Tooltip
+                  content="Accounts & more options"
+                  placement="bottom"
+                  arrow={false}
+                >
                   <button className="p-0.5 hover:bg-gray-200 rounded-full block">
                     <IconChevronDown width={25} height={25} />
                   </button>
