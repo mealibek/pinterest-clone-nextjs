@@ -4,7 +4,8 @@ import React from "react";
 function Profile() {
   return (
     <main className="content">
-      <div>
+      <div></div>
+      <div className="w-full">
         <Link
           href={"/auth/signout"}
           type="button"

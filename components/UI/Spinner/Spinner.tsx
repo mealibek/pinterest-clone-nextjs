@@ -2,10 +2,9 @@ import React from "react";
 import { HashLoader } from "react-spinners";
 function Spinner() {
   return (
-    <div className="w-full">
-      <div>
-        <HashLoader color="#647C90" size={30} className="mt-10 m-auto" />
-      </div>
+    <div className="w-full grid place-items-center">
+      <h2>Pinterest Home</h2>
+      <h3>Loading Spinner Here...</h3>
     </div>
   );
 }

@@ -9,9 +9,23 @@ import {
   IconMessageCircle2Filled,
   IconChevronDown,
   IconMoodKidFilled,
+  IconUserCircle,
+  IconBrandPinterest,
+  IconUserFilled,
+  IconSquareRoundedPlusFilled,
+  IconLogout,
+  IconBookmarksFilled,
 } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
-import { CustomFlowbiteTheme, Flowbite, Tooltip } from "flowbite-react";
+import {
+  CustomFlowbiteTheme,
+  Dropdown,
+  Flowbite,
+  Tooltip,
+} from "flowbite-react";
+import { IconHeart } from "@tabler/icons-react";
+import { IconHeartFilled } from "@tabler/icons-react";
+import { IconShieldLockFilled } from "@tabler/icons-react";
 
 const customTheme: CustomFlowbiteTheme = {
   tooltip: {
@@ -25,6 +39,11 @@ const customTheme: CustomFlowbiteTheme = {
         dark: "bg-black",
       },
       placement: "-4px",
+    },
+  },
+  dropdown: {
+    floating: {
+      base: "z-0 w-fit rounded-xl divide-y divide-gray-100 shadow focus:outline-none",
     },
   },
 };
@@ -60,7 +79,7 @@ function Header() {
 
       <Search />
 
-      <div className="text-gray-500 flex items-center gap-2">
+      <div className="text-gray-600 flex items-center gap-2">
         <Flowbite theme={{ theme: customTheme }}>
           <Tooltip content="Notifications" placement="bottom">
             <Link
@@ -87,11 +106,76 @@ function Header() {
               <IconMoodKidFilled width={25} height={25} />
             </Link>
           </Tooltip>
-          <Tooltip content="Accounts & more options" placement="bottom">
-            <button className="p-0.5 hover:bg-gray-200 rounded-full block">
-              <IconChevronDown width={25} height={25} />
-            </button>
-          </Tooltip>
+
+          <Dropdown
+            label=""
+            renderTrigger={() => (
+              <div>
+                <Tooltip content="Accounts & more options" placement="bottom">
+                  <button className="p-0.5 hover:bg-gray-200 rounded-full block">
+                    <IconChevronDown width={25} height={25} />
+                  </button>
+                </Tooltip>
+              </div>
+            )}
+          >
+            <div className="w-[250px] font-medium grid">
+              <Dropdown.Item>
+                <Link
+                  href={"/profile"}
+                  className="w-full flex items-center gap-2"
+                >
+                  <IconUserFilled width={25} height={25} />
+                  View Profile
+                </Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link
+                  href={"/profile/pins/create"}
+                  className="w-full flex items-center gap-2"
+                >
+                  <IconSquareRoundedPlusFilled width={25} height={25} />
+                  Create Pin
+                </Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link
+                  href={"/profile/pins/saved"}
+                  className="w-full flex items-center gap-2"
+                >
+                  <IconBookmarksFilled width={25} height={25} />
+                  View Saved Pins
+                </Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link
+                  href={"/profile/notifications"}
+                  className="w-full flex items-center gap-2"
+                >
+                  <IconBellFilled width={25} height={25} />
+                  Notifications
+                </Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link
+                  href={"/profile/messages"}
+                  className="w-full flex items-center gap-2"
+                >
+                  <IconMessageCircle2Filled width={25} height={25} />
+                  Messages
+                </Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link
+                  href={"/auth/signout"}
+                  className="w-full flex items-center gap-2"
+                >
+                  <IconShieldLockFilled width={25} height={25} />
+                  Sign Out
+                </Link>
+              </Dropdown.Item>
+            </div>
+          </Dropdown>
         </Flowbite>
       </div>
     </header>
