@@ -12,3 +12,4 @@ export type UpdateProfileSchema = {
 export const updateProfile = async (data: UpdateProfileSchema) => {
     return interceptor.patch(`${BASE_URL}/profile/`, data);
 }
+

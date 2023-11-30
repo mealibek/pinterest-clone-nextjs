@@ -10,6 +10,6 @@
 
 @layer components {
   .content {
-    @apply max-w-screen-3xl m-auto px-4 bg-white text-black;
+    @apply min-w-[1020px] max-w-screen-3xl m-auto px-4 bg-white text-black;
   }
 }
