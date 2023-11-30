@@ -7,7 +7,7 @@ import React from "react";
 async function SignIn() {
   const session = await getServerSession(options);
 
-  if (session?.user || session?.expires) {
+  if (session?.user && session) {
     return redirect("/");
   }
 

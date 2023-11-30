@@ -24,7 +24,7 @@ function SignOutForm() {
           type="submit"
           className="w-full text-white bg-main-color hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full px-5 py-2 text-center font-bold"
         >
-          Log out
+          Sign Out
         </button>
       </form>
     </div>

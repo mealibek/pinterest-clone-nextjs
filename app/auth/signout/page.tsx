@@ -7,7 +7,7 @@ import React from "react";
 async function SignOut() {
   const session = await getServerSession(options);
 
-  if (!session?.user) {
+  if (!session?.user && !session) {
     return redirect("/auth/signin");
   }
 
