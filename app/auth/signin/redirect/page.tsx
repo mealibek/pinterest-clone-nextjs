@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/UI/Spinner";
 import { getAuthInfo } from "@/services/auth";
 import { setAuthentication } from "@/store/auth/auth.slice";
 import { AuthUserType } from "@/types/redux/auth";
@@ -42,7 +43,11 @@ function AuthRedirect() {
       router.push("/auth/signin");
     }
   }, [dispatch, status]);
-  return <div>AuthRedirect</div>;
+  return (
+    <main className="content">
+      <Spinner />
+    </main>
+  );
 }
 
 export default AuthRedirect;

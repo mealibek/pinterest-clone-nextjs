@@ -3,12 +3,14 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { persistor } from "@/store/index";
 
 function SignOutForm() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    persistor.purge();
     await signOut({ redirect: false });
     router.refresh();
   };
