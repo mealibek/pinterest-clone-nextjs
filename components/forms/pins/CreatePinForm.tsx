@@ -1,14 +1,82 @@
 "use client";
 
 import Input from "@/components/UI/Input";
-import React, { useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Pinterest from "@/assets/svg/pinterest.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { PinSchema, PinSchemaType } from "@/validations/pin";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { uploadImage } from "@/utils/pins";
+import { createPinRequest } from "@/services/pins";
 
 function CreatePinForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PinSchemaType>({
+    resolver: zodResolver(PinSchema as any),
+    mode: "onBlur",
+  });
+
+  const [imageError, setImageError] = useState<string | undefined>(undefined);
   const router = useRouter();
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+
+    if (file) {
+      // Check if the selected file is an image
+      if (!file.type.startsWith("image/")) {
+        setImageError(
+          "Please select a valid image file (JPEG, PNG, GIF, etc.)."
+        );
+        setSelectedImage(null);
+      } else {
+        setImageError(undefined);
+        setSelectedImage(file);
+      }
+    }
+  };
+
+  const onSubmit = async (data: PinSchemaType) => {
+    try {
+      if (!selectedImage) {
+        console.error("No image selected.");
+        return;
+      }
+
+      if (imageError) {
+        console.log(imageError);
+        return;
+      }
+
+      const imageRequest = await uploadImage(selectedImage);
+      const { image_url } = imageRequest.data;
+
+      if (image_url) {
+        const updatedData = { ...data, image: image_url };
+        const req = await createPinRequest(updatedData);
+
+        if (req.status === 201) {
+          setErrorMessages([]);
+          alert("Pin Created!");
+        }
+      } else {
+        setErrorMessages(["Image Upload Failed."]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(selectedImage);
+  }, [selectedImage]);
 
   return (
     <div className="max-w-[400px] m-auto mt-10 rounded-lg border border-gray-200 p-4 space-y-4">
@@ -25,78 +93,88 @@ function CreatePinForm() {
             </p>
           ))}
       </div>
-      <form action="" className="">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        action="#"
+        noValidate
+        className="w-full"
+      >
         <div className="mb-4">
-          <Input type="text" label="Pin Title" id="pin_title" />
+          <Input
+            type="text"
+            label="Pin Title"
+            id="pin_title"
+            {...register("title")}
+            error={errors.title?.message}
+          />
         </div>
         <div className="mb-4">
           <label
             htmlFor="message"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             Pin Description
           </label>
           <textarea
             id="message"
             rows={4}
-            className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-900"
+            className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-200 focus:border-blue-900"
             placeholder="Pin Description text here..."
+            {...register("description")}
           ></textarea>
-        </div>
 
-        <div className="w-full mb-4">
-          <div className="mx-auto">
-            <label
-              htmlFor="example5"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              Upload Pin Image
-            </label>
-            <label className="flex w-full cursor-pointer appearance-none items-center justify-center rounded-lg border-2 border-dashed border-gray-200 p-6 transition-all hover:border-blue-900">
-              <div className="space-y-1 text-center">
-                <div className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    className="h-6 w-6 text-gray-500"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                    />
-                  </svg>
-                </div>
-                <div className="text-gray-600">
-                  <a
-                    href="#"
-                    className="font-medium text-gray-900 hover:text-blue-900"
-                  >
-                    Click to upload
-                  </a>{" "}
-                  or drag and drop
-                </div>
-                <p className="text-sm text-gray-500">
-                  PNG or JPG (max. 800x400px)
-                </p>
-              </div>
-              <input id="example5" type="file" className="sr-only" />
-            </label>
-          </div>
+          {errors.description && (
+            <p className="text-xs text-red-600 mt-2 font-medium">
+              {errors.description.message}
+            </p>
+          )}
+        </div>
+        <div className="mb-4">
+          <label
+            className="block mb-2 text-sm font-medium text-gray-900"
+            htmlFor="file_input"
+          >
+            Upload file
+          </label>
+          <input
+            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white"
+            id="file_input"
+            type="file"
+            onChange={handleFileChange}
+            required
+          ></input>
+
+          {imageError && (
+            <p className="text-xs text-red-600 mt-2 font-medium">
+              {imageError}
+            </p>
+          )}
         </div>
 
         <div className="mb-4">
-          <Input type="text" label="Pin Website" id="pin_website" />
+          <Input
+            type="text"
+            label="Pin Website"
+            id="pin_website"
+            {...register("website")}
+            error={errors.website?.message}
+          />
         </div>
         <div className="mb-4">
-          <Input type="text" label="Pin URL" id="pin_url" />
+          <Input
+            type="text"
+            label="Pin URL"
+            id="pin_url"
+            {...register("urlPath")}
+            error={errors.urlPath?.message}
+          />
         </div>
 
         <div className="flex items-center gap-2">
-          <button className="text-white bg-main-color hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full text-sm px-5 py-2 text-center font-bold w-full">
+          <button
+            type="submit"
+            className="text-white bg-main-color hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full text-sm px-5 py-2 text-center font-bold w-full"
+          >
             Submit
           </button>
           <button
