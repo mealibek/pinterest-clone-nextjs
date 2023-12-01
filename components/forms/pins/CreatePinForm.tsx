@@ -52,7 +52,7 @@ function CreatePinForm() {
             >
               Upload Pin Image
             </label>
-            <label className="flex w-full cursor-pointer appearance-none items-center justify-center rounded-lg border-2 border-dashed border-gray-200 p-6 transition-all hover:border-main-color">
+            <label className="flex w-full cursor-pointer appearance-none items-center justify-center rounded-lg border-2 border-dashed border-gray-200 p-6 transition-all hover:border-blue-900">
               <div className="space-y-1 text-center">
                 <div className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
                   <svg
@@ -73,7 +73,7 @@ function CreatePinForm() {
                 <div className="text-gray-600">
                   <a
                     href="#"
-                    className="font-medium text-gray-900 hover:text-main-color"
+                    className="font-medium text-gray-900 hover:text-blue-900"
                   >
                     Click to upload
                   </a>{" "}
