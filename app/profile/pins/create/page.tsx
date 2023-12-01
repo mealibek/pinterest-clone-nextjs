@@ -1,7 +1,12 @@
+import CreatePinForm from "@/components/forms/pins/CreatePinForm";
 import React from "react";
 
 function CreatePin() {
-  return <div>CreatePin</div>;
+  return (
+    <section className="content">
+      <CreatePinForm />
+    </section>
+  );
 }
 
 export default CreatePin;

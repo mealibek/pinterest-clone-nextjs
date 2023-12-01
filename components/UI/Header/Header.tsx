@@ -118,7 +118,7 @@ function Header() {
             </Tooltip>
           )}
 
-          {isLoggedIn ? (
+          {isLoggedIn && (
             <Tooltip content="Your profile" placement="bottom" arrow={false}>
               <Link
                 href="/profile"
@@ -127,7 +127,9 @@ function Header() {
                 <IconMoodKidFilled width={25} height={25} />
               </Link>
             </Tooltip>
-          ) : (
+          )}
+
+          {!isLoggedIn && (
             <>
               <Link
                 href={"/auth/signin"}

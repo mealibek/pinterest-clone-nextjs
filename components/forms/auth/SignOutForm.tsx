@@ -3,10 +3,12 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { persistor } from "@/store/index";
+import { RootState, persistor } from "@/store/index";
+import { useSelector } from "react-redux";
 
 function SignOutForm() {
   const router = useRouter();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ function SignOutForm() {
       <form onSubmit={handleSubmit}>
         <h1 className="text-center mb-4 text-lg font-bold">Выход из системы</h1>
         <h2 className="mb-4 text-sm text-gray-500 font-medium text-center">
-          Вы уверены, что хотите выйти из учетной записи
+          Вы уверены, что хотите выйти из учетной записи "{user.email}"
         </h2>
         <button
           type="submit"

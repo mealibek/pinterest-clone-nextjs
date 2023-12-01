@@ -1,18 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Pinterest from "@/assets/svg/pinterest.svg";
 import Input from "@/components/UI/Input";
 import { useForm } from "react-hook-form";
 import { SignInSchema, SignInSchemaType } from "@/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useSearchParams } from "next/navigation";
-import { emailCheckRequest, getAuthInfo } from "@/services/auth";
-import { useDispatch } from "react-redux";
-import { signIn, useSession } from "next-auth/react";
-import { setAuthentication } from "@/store/auth/auth.slice";
-import { AuthUserType } from "@/types/redux/auth";
+import { emailCheckRequest } from "@/services/auth";
+import { signIn } from "next-auth/react";
 
 function SignInForm() {
   const {
@@ -23,14 +19,7 @@ function SignInForm() {
     resolver: zodResolver(SignInSchema as any),
     mode: "onBlur",
   });
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
-  const dispatch = useDispatch();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { data: session } = useSession();
 
   const extractErrorMessages = (error: any): string[] => {
     if (error.response) {
