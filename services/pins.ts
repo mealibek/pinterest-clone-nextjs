@@ -10,7 +10,7 @@ export const getPins = async () => {
 
 
 export const createPinRequest = async (data: PinSchemaType) => {
-    return interceptors.post(`/pins/`, {
+    return interceptors.post(`${BASE_URL}/pins/`, {
         title: data.title,
         description: data.description,
         image: data.image,

@@ -13,7 +13,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "storage.googleapis.com",
-        pathname: "/dreaps-assets/**",
+        pathname: "/pinterest-clone/**",
       },
       {
         hostname: "cdn.pixabay.com",

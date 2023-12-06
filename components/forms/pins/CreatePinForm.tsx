@@ -25,6 +25,7 @@ function CreatePinForm() {
   const router = useRouter();
   const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -55,22 +56,37 @@ function CreatePinForm() {
         return;
       }
 
+      // Set loading state
+      setLoading(true);
+
       const imageRequest = await uploadImage(selectedImage);
-      const { image_url } = imageRequest.data;
 
-      if (image_url) {
-        const updatedData = { ...data, image: image_url };
-        const req = await createPinRequest(updatedData);
+      if (imageRequest.status === 201) {
+        const { image_url } = imageRequest.data;
 
-        if (req.status === 201) {
-          setErrorMessages([]);
-          alert("Pin Created!");
+        if (image_url) {
+          const updatedData = { ...data, image: image_url };
+          const pinRequest = await createPinRequest(updatedData);
+
+          if (pinRequest.status === 201) {
+            setErrorMessages([]);
+            alert("Pin Created!");
+            // Redirect or perform any additional actions after successful pin creation
+          } else {
+            setErrorMessages(["Failed to create pin."]);
+          }
+        } else {
+          setErrorMessages(["Image Upload Failed."]);
         }
       } else {
         setErrorMessages(["Image Upload Failed."]);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error creating pin:", error);
+      setErrorMessages(["An unexpected error occurred."]);
+    } finally {
+      // Reset loading state
+      setLoading(false);
     }
   };
 
@@ -175,7 +191,7 @@ function CreatePinForm() {
             type="submit"
             className="text-white bg-main-color hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full text-sm px-5 py-2 text-center font-bold w-full"
           >
-            Submit
+            {loading ? "Loading..." : "Submit"}
           </button>
           <button
             type="button"
